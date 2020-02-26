@@ -3,19 +3,19 @@
   display: grid;
   justify-content: center;
   grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
-  grid-gap: 2em;
+  gap: 2em;
   background: rgb(92, 87, 87, 0.6);
 }
 
 .team-img {
   max-width: 100%;
+  outline: none;
   cursor: pointer;
   transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
 }
 .team-img:hover {
   transform: scale(1.1);
 }
-
 .spinner {
   text-align: center;
 }

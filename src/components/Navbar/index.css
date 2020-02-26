@@ -1,5 +1,8 @@
 .navbar {
   padding: 0.5em 1em;
+  display: grid;
+  gap: 1em;
+  grid-template-columns: min-content min-content auto;
   background: rgb(92, 87, 87, 0.7);
 }
 
@@ -14,17 +17,38 @@
 }
 .fa-heart {
   color: #fc5185;
-  padding-left: 0.5em;
 }
 .icon:hover {
   transform: scale(1.2);
+}
+.authBtn {
+  background: #da2d2d;
+  color: #f5f5f5;
+  border: none;
+  font-size: 1em;
+  outline: none;
+  width: fit-content;
+  border-radius: 0.5em;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 0.5em;
+  transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.authBtn .fa-google {
+  padding-left: 0.5em;
+}
+.authBtn:hover {
+  transform: scale(1.1);
 }
 
 @media only screen and (max-width: 600px) {
   .navbar {
     padding: 0.5em;
   }
-
+  .authBtn {
+    font-size: 0.8em;
+  }
   .icon {
     font-size: 1.5em;
   }

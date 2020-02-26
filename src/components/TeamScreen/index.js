@@ -67,7 +67,7 @@ const TeamScreen = props => {
           ))}
       </div>
     ) : (
-      <ClipLoader />
+      <ClipLoader color={'#f5f5f5'} />
     );
   };
   return <div>{renderPlayers()}</div>;

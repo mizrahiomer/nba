@@ -1,5 +1,6 @@
 import React from 'react';
-import { Route, Switch, HashRouter as Router } from 'react-router-dom';
+import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+
 import Navbar from './components/Navbar';
 import Scores from './components/Scores';
 import TeamsList from './components/TeamsList';
@@ -8,7 +9,7 @@ import './App.css';
 
 const App = () => {
   return (
-    <Router basename='/'>
+    <Router>
       <div className='App'>
         <Navbar />
         <Scores />
