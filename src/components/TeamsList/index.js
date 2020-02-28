@@ -3,14 +3,11 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import { fetchTeams } from '../../include/generateEndPoints';
-// import { createLogosArray } from '../../stateManager/actions/logos';
 import './index.css';
-// import { useDispatch } from 'react-redux';
 
 const TeamsList = () => {
   const [loading, setLoading] = useState(true);
   const [teams, setTeams] = useState(null);
-  // const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -18,7 +15,6 @@ const TeamsList = () => {
         const res = await axios.get(url);
         setTeams(res.data.teams);
         setLoading(false);
-        // dispatch(createLogosArray(res.data.teams));
       } catch (e) {
         console.log(e);
       }

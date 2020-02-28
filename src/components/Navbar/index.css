@@ -1,13 +1,19 @@
 .navbar {
   padding: 0.5em 1em;
   display: grid;
-  gap: 1em;
-  grid-template-columns: min-content min-content auto;
+  gap: 2em;
+  grid-template-columns: max-content max-content min-content max-content;
   background: rgb(92, 87, 87, 0.7);
 }
-
+.hello {
+  color: #f5f5f5;
+  font-size: 1.5em;
+  padding-left: 1em;
+  font-weight: 550;
+}
 .icon {
-  font-size: 2.2em;
+  font-size: 2em;
+  outline: none;
   text-align: center;
   cursor: pointer;
   transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
@@ -46,8 +52,11 @@
   .navbar {
     padding: 0.5em;
   }
-  .authBtn {
+  .hello {
     font-size: 0.8em;
+  }
+  .authBtn {
+    font-size: 0.7em;
   }
   .icon {
     font-size: 1.5em;

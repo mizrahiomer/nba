@@ -9,7 +9,7 @@ const Scores = () => {
   const [scores, setScores] = useState();
   const [move, setMove] = useState(true);
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchScores = async () => {
       try {
         const url = fetchLastEvents();
         const res = await axios.get(url);
@@ -19,7 +19,7 @@ const Scores = () => {
       }
     };
 
-    fetchData();
+    fetchScores();
   }, []);
 
   const renderTicker = () => {
@@ -50,7 +50,7 @@ const Scores = () => {
             }
           </Ticker>
         ) : (
-          <ClipLoader color={'#f5f5f5'} />
+          <ClipLoader color={'#fff'} />
         )}
       </div>
     );

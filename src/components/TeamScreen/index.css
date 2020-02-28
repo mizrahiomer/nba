@@ -2,14 +2,8 @@
   padding: 0.2em 0.8em;
   display: grid;
   grid-gap: 1em;
-  height: fit-content;
   text-align: center;
   grid-template-columns: auto auto;
-  transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
-}
-.events-wrapper.hide {
-  opacity: 0;
-  height: 0;
 }
 
 .events-container {
@@ -33,6 +27,14 @@
   font-weight: 650;
   font-size: 1.4em;
 }
+.win {
+  padding: 0 0.3em;
+  color: #018b3b;
+}
+.lose {
+  padding: 0 0.3em;
+  color: #f1392c;
+}
 .event-details {
   font-weight: 550;
 }
@@ -46,7 +48,6 @@
   transform: scale(1.2);
 }
 .events-toggle {
-  margin-bottom: 1em;
   padding: 0.5em;
   text-align: center;
   color: #f5f5f5;
@@ -63,6 +64,7 @@
   transform: scale(1.1);
 }
 .players-container {
+  display: block;
   padding: 1.5em;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
@@ -101,7 +103,43 @@
   opacity: 1;
   background: rgba(37, 36, 36, 0.4);
 }
-
+.team-logo-container {
+  margin: 0.5em 0;
+  text-align: center;
+}
+.team-logo {
+  width: 50%;
+  height: auto;
+  border-radius: 0 0.3em 0.3em 0;
+}
+.social-links {
+  padding: 0.2em 0.8em;
+  border-radius: 0 0.3em 0.3em 0;
+  display: inline-grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 1em;
+  font-size: 2.2em;
+  background: rgba(228, 225, 223, 0.7);
+}
+.social-icon {
+  color: rgb(85, 78, 78);
+  transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.social-icon:hover {
+  color: rgb(43, 41, 41);
+  transform: scale(1.2);
+}
+.slider {
+  width: 80%;
+  margin: 0 auto;
+  padding: 1em 0;
+  height: auto;
+}
+.slider-img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5em;
+}
 @media only screen and (max-width: 600px) {
   .event-img {
     width: 2em;
@@ -112,6 +150,9 @@
   }
   .team-name {
     font-size: 0.9em;
+  }
+  .player-name {
+    font-size: 0.4em;
   }
   .event-date {
     font-size: 0.8em;
@@ -124,6 +165,9 @@
     padding: 30% 0.5em;
   }
   .players-container {
-    grid-template-columns: repeat(auto-fill, minmax(4em, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(3em, 1fr));
+  }
+  .social-links {
+    font-size: 1.5em;
   }
 }

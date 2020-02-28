@@ -6,7 +6,6 @@ import { getAuth, googleOAuth } from '../../Firebase/auth';
 import './index.css';
 const Navbar = () => {
   const isSignedIn = useSelector(state => state.auth.isSignedIn);
-  console.log(isSignedIn);
   const userName = useSelector(state => state.auth.userName);
 
   const dispatch = useDispatch();
@@ -23,14 +22,15 @@ const Navbar = () => {
 
   return (
     <div className='navbar'>
+      {isSignedIn ? <span className='hello'>Hello, {userName}</span> : null}
       <Link to={'/'}>
-        <i className='fas fa-home icon' />
+        <i className='fa fa-home icon' />
       </Link>
       {isSignedIn ? <i className='fa fa-heart icon' /> : null}
-      <button className='authBtn' onClick={authClickHandler}>
+      <div className='authBtn' onClick={authClickHandler}>
         {isSignedIn ? 'Sign Out' : 'Sign In'}
         <i className='fab fa-google'></i>
-      </button>
+      </div>
     </div>
   );
 };
