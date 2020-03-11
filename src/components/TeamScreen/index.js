@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ClipLoader } from 'react-spinners';
-
 import { useSelector, useDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Slide from 'react-reveal/Slide';
+import { createTeamObject } from '../../include/createObject';
 import {
   fetchTeamDetails,
   fetchTeamLastEvents,
@@ -11,21 +12,27 @@ import {
   fetchPlayersByTeamName,
   fetchTeams
 } from '../../include/generateEndPoints';
-import TeamEvents from './TeamEvents';
+import { addTeam, removeTeam } from '../../stateManager/actions/favorites';
+import Event from './Event';
 import PlayersList from './PlayersList';
-import TeamHeader from './TeamHeader';
+import Header from './Header';
 import FanArt from './FanArt';
+import PlayerCard from '../PlayerCard';
 import { createLogosArray } from '../../stateManager/actions/logos';
 import noImg from '../../assets/noImg.png';
 import './index.css';
 
 const TeamScreen = props => {
-  const [eventsToggler, setEventsToggler] = useState(false);
+  const [eventsToggler, setEventsToggler] = useState(true);
+  const [currPlayer, setCurrPlayer] = useState();
   const [nextEvents, setNextEvents] = useState();
   const [lastEvents, setLastEvents] = useState();
   const [details, setDetails] = useState();
   const [players, setPlayers] = useState();
+  const [teams, setTeams] = useState();
+  const userId = useSelector(state => state.auth.userId);
   const logos = useSelector(state => state.logos);
+  const favoritesArr = useSelector(state => state.favorites.teams);
   const teamName = props.match.params.name;
   const teamId = props.match.params.id;
   const dispatch = useDispatch();
@@ -33,25 +40,25 @@ const TeamScreen = props => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const asyncReq = [
-          axios.get(fetchTeamNextEvents(teamId)),
-          axios.get(fetchTeamLastEvents(teamId)),
-          axios.get(fetchTeamDetails(teamName)),
-          axios.get(fetchPlayersByTeamName(teamName)),
-          axios.get(fetchTeams(teamName))
-        ];
         let [
           fetchedNextEvents,
           fetchedLastEvents,
           fetchedDetails,
           fetchedPlayers,
           fetchedTeams
-        ] = await Promise.all(asyncReq);
+        ] = await Promise.all([
+          axios.get(fetchTeamNextEvents(teamId)),
+          axios.get(fetchTeamLastEvents(teamId)),
+          axios.get(fetchTeamDetails(teamName)),
+          axios.get(fetchPlayersByTeamName(teamName)),
+          axios.get(fetchTeams(teamName))
+        ]);
 
         setNextEvents(fetchedNextEvents.data.events);
         setLastEvents(fetchedLastEvents.data.results);
         setDetails(fetchedDetails.data.teams[0]);
         setPlayers(fetchedPlayers.data.player);
+        setTeams(fetchedTeams.data.teams);
         dispatch(createLogosArray(fetchedTeams.data.teams));
       } catch (e) {
         console.log(e);
@@ -59,20 +66,47 @@ const TeamScreen = props => {
     };
     fetchData();
   }, [teamId, teamName, dispatch]);
+  const checkIfFavorite = () => {
+    const isFavorite = favoritesArr.find(
+      favorite =>
+        favorite.userId === userId && favorite.teamId === details.idTeam
+    );
+    return isFavorite;
+  };
+  const toggleFavorite = () => {
+    const { idTeam, strTeam, strTeamBadge } = details;
+    checkIfFavorite()
+      ? dispatch(removeTeam(userId, idTeam))
+      : dispatch(
+          addTeam(createTeamObject(userId, idTeam, strTeam, strTeamBadge))
+        );
+  };
   const renderHeader = () => {
-    console.log(details);
     return details ? (
-      <TeamHeader
+      <Header
         key={details.idTeam}
-        banner={details.strTeamLogo}
+        logo={details.strTeamLogo}
         facebook={details.strFacebook}
         twitter={details.strTwitter}
         instagram={details.strInstagram}
         youtube={details.strYoutube}
-      ></TeamHeader>
+        isFavorite={checkIfFavorite()}
+        toggleFavorite={() => toggleFavorite()}
+      ></Header>
     ) : (
       <ClipLoader color={'#fff'} />
     );
+  };
+  const renderPlayerCard = playerId => {
+    return <PlayerCard id={playerId} close={() => setCurrPlayer(null)} />;
+  };
+  const renderErrorPage = () => {
+    const isExist = teams
+      ? teams.find(team => team.idTeam === teamId && team.strTeam === teamName)
+      : true;
+    if (!isExist) {
+      return <Redirect to='/404' />;
+    }
   };
   const renderFanArt = () => {
     return details ? (
@@ -84,7 +118,9 @@ const TeamScreen = props => {
           details.strTeamFanart4
         ]}
       />
-    ) : null;
+    ) : (
+      <ClipLoader color={'#fff'} />
+    );
   };
 
   const renderLastEvents = () => {
@@ -92,7 +128,7 @@ const TeamScreen = props => {
       <div className='events-container'>
         {lastEvents.map(event => {
           return (
-            <TeamEvents
+            <Event
               key={event.idEvent}
               currTeam={details.idTeam}
               homeTeam={{
@@ -106,7 +142,7 @@ const TeamScreen = props => {
                 score: event.intAwayScore
               }}
               date={event.dateEvent}
-            ></TeamEvents>
+            ></Event>
           );
         })}
       </div>
@@ -115,9 +151,9 @@ const TeamScreen = props => {
   const renderNextEvents = () => {
     return nextEvents && logos && details ? (
       <div className='events-container'>
-        {nextEvents.reverse().map(event => {
+        {nextEvents.map(event => {
           return (
-            <TeamEvents
+            <Event
               key={event.idEvent}
               currTeam={details.idTeam}
               homeTeam={{
@@ -129,7 +165,7 @@ const TeamScreen = props => {
                 name: event.strAwayTeam
               }}
               date={event.dateEvent}
-            ></TeamEvents>
+            ></Event>
           );
         })}
       </div>
@@ -137,10 +173,10 @@ const TeamScreen = props => {
   };
   const renderEvents = () => {
     return (
-      <Slide right opposite collapse when={eventsToggler}>
+      <Slide right>
         <div className={'events-wrapper'}>
-          {renderNextEvents()}
           {renderLastEvents()}
+          {renderNextEvents()}
         </div>
       </Slide>
     );
@@ -154,6 +190,7 @@ const TeamScreen = props => {
             <PlayersList
               key={player.idPlayer}
               id={player.idPlayer}
+              show={() => setCurrPlayer(player.idPlayer)}
               img={player.strCutout !== null ? player.strCutout : noImg}
               name={player.strPlayer}
             />
@@ -163,8 +200,9 @@ const TeamScreen = props => {
       <ClipLoader color={'#fff'} />
     );
   };
+
   return (
-    <div>
+    <div className='team-screen'>
       <div
         className='events-toggle'
         onClick={() => {
@@ -176,9 +214,11 @@ const TeamScreen = props => {
         </p>
       </div>
       {renderHeader()}
-      {renderEvents()}
+      {eventsToggler ? renderEvents() : null}
       {renderPlayers()}
       {renderFanArt()}
+      {currPlayer ? renderPlayerCard(currPlayer) : null}
+      {renderErrorPage()}
     </div>
   );
 };

@@ -1,0 +1,48 @@
+.error-screen {
+  text-align: center;
+  background: rgba(228, 225, 223, 0.8);
+  width: 50%;
+  margin: 3em auto;
+  padding: 2em;
+  border-radius: 0.5em;
+  text-transform: uppercase;
+  color: rgb(49, 46, 44);
+  border: 0.2em solid white;
+}
+.error-logo {
+  width: 35%;
+  height: auto;
+}
+.error-title {
+  font-size: 5em;
+  font-weight: 700;
+}
+.error-text {
+  margin-bottom: 2em;
+  font-weight: 550;
+}
+.error-btn {
+  background: rgb(12, 119, 206);
+  padding: 0.8em;
+  margin: 2em 0;
+  color: rgb(228, 225, 223);
+  font-size: 1.1em;
+  font-weight: 550;
+  border-radius: 0.5em;
+  text-decoration: none;
+  transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.error-btn:hover {
+  background-color: rgb(18, 93, 155);
+}
+@media only screen and (max-width: 600px) {
+  .error-screen {
+    width: 70%;
+  }
+  .error-logo {
+    width: 50%;
+  }
+  .error-title {
+    font-size: 4em;
+  }
+}

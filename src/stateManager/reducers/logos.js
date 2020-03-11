@@ -5,7 +5,7 @@ const logos = (state = null, action) => {
     case actionTypes.CREATE_LOGOS_ARRAY:
       const logos = {};
       action.teams.map(team => {
-        return (logos[team.strTeam] = `${team.strTeamBadge}/preview`);
+        return (logos[team.strTeam] = team.strTeamBadge);
       });
 
       return logos;

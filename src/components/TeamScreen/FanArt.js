@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 const FanArt = props => {
   const settings = {
     infinite: true,
-    speed: 500,
+    speed: 700,
     slidesToShow: 1,
     slidesToScroll: 1
   };

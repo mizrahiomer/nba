@@ -4,7 +4,8 @@ import Navbar from './components/Navbar';
 import Scores from './components/Scores';
 import TeamsList from './components/TeamsList';
 import TeamScreen from './components/TeamScreen';
-import PlayerScreen from './components/PlayerScreen';
+import ErrorPage from './components/ErrorPage';
+import Favorites from './components/Favorites';
 import './App.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -16,13 +17,10 @@ const App = () => {
         <Navbar />
         <Scores />
         <Switch>
-          <Route path='/' exact component={TeamsList}></Route>
-          <Route path='/Team/:id/:name' exact component={TeamScreen}></Route>
-          <Route
-            path='/Player/:id/:name'
-            exact
-            component={PlayerScreen}
-          ></Route>
+          <Route path='/' exact component={TeamsList} />
+          <Route path='/Team/:id/:name' exact component={TeamScreen} />
+          <Route path='/Favorites' exact component={Favorites} />
+          <Route path='/' component={ErrorPage} />
         </Switch>
       </div>
     </Router>

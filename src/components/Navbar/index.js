@@ -26,7 +26,11 @@ const Navbar = () => {
       <Link to={'/'}>
         <i className='fa fa-home icon' />
       </Link>
-      {isSignedIn ? <i className='fa fa-heart icon' /> : null}
+      {isSignedIn ? (
+        <Link to='/Favorites'>
+          <i className='far fa-heart icon' />
+        </Link>
+      ) : null}
       <div className='authBtn' onClick={authClickHandler}>
         {isSignedIn ? 'Sign Out' : 'Sign In'}
         <i className='fab fa-google'></i>

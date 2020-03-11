@@ -1,9 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Slide from 'react-reveal/Slide';
 
-const TeamHeader = props => {
+const Header = props => {
+  const isSignedIn = useSelector(state => state.auth.isSignedIn);
+  const isFavorite = props.isFavorite ? 'team-favorite' : '';
   return (
-    <div>
+    <div className='team-header'>
       <Slide left>
         <div className='social-links'>
           <a href={'//' + props.facebook} target='_blang'>
@@ -18,13 +21,21 @@ const TeamHeader = props => {
           <a href={'//' + props.twitter} target='_blang'>
             <i className='fab fa-twitter social-icon'></i>
           </a>
+          {isSignedIn ? (
+            <span className='social-icon'>
+              <i
+                onClick={props.toggleFavorite}
+                className={`fa fa-heart ${isFavorite}`}
+              ></i>
+            </span>
+          ) : null}
         </div>
       </Slide>
       <div className='team-logo-container'>
-        <img className='team-logo' src={props.banner} alt={'Banner'} />
+        <img className='team-logo' src={props.logo} alt={'Logo'} />
       </div>
     </div>
   );
 };
 
-export default TeamHeader;
+export default Header;

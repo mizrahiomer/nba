@@ -1,3 +1,6 @@
+.team-screen {
+  background: rgba(228, 225, 223, 0.6);
+}
 .events-wrapper {
   padding: 0.2em 0.8em;
   display: grid;
@@ -7,33 +10,34 @@
 }
 
 .events-container {
-  border-top: #f5f5f5 0.1em solid;
-  background: rgba(228, 225, 223, 0.7);
 }
 .event {
   display: grid;
   padding: 0.5em 0.3em;
-  border-bottom: #f5f5f5 0.1em solid;
+  border-radius: 0.5em;
+  margin: 0.5em 0;
+  background: rgb(92, 87, 87, 0.6);
+  border: #faf8eb 0.1em solid;
   grid-template-columns: 35% 30% 35%;
-  color: black;
+  color: #faf8eb;
 }
 .event-date {
   padding-bottom: 1.2em;
 }
 .team-name {
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 .event-score {
   font-weight: 650;
-  font-size: 1.4em;
+  font-size: 1.3em;
 }
 .win {
   padding: 0 0.3em;
-  color: #018b3b;
+  color: #9cdcaa;
 }
 .lose {
   padding: 0 0.3em;
-  color: #f1392c;
+  color: #f8a3a8;
 }
 .event-details {
   font-weight: 550;
@@ -45,7 +49,7 @@
   transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
 }
 .event-img:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 .events-toggle {
   padding: 0.5em;
@@ -54,8 +58,8 @@
   background: rgb(92, 87, 87, 0.7);
 }
 .toggle-btn {
-  margin: 0 auto;
-  width: fit-content;
+  display: inline;
+  margin: 0 1em;
   font-size: 1.2em;
   cursor: pointer;
   transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
@@ -64,18 +68,18 @@
   transform: scale(1.1);
 }
 .players-container {
-  display: block;
+  justify-content: center;
   padding: 1.5em;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
   grid-gap: 2em;
 }
-.player-img {
+.player-list-img {
   border-radius: 50%;
   background-color: #dfd8d8;
   max-width: 100%;
 }
-.overlay {
+.img-overlay {
   position: absolute;
   display: table;
   border-radius: 50%;
@@ -86,7 +90,7 @@
   opacity: 0;
   border: 1px #f5f5f5 solid;
 }
-.player-name {
+.player-list-name {
   font-size: 1.3em;
   display: table-cell;
   vertical-align: middle;
@@ -99,29 +103,32 @@
 .img-container:hover {
   transform: scale(1.1);
 }
-.img-container:hover .overlay {
+.img-container:hover .img-overlay {
   opacity: 1;
   background: rgba(37, 36, 36, 0.4);
 }
 .team-logo-container {
-  margin: 0.5em 0;
   text-align: center;
 }
 .team-logo {
   width: 50%;
   height: auto;
-  border-radius: 0 0.3em 0.3em 0;
 }
+.team-favorite {
+  color: rgb(243, 97, 97);
+}
+
 .social-links {
   padding: 0.2em 0.8em;
   border-radius: 0 0.3em 0.3em 0;
   display: inline-grid;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(5, auto);
   gap: 1em;
   font-size: 2.2em;
-  background: rgba(228, 225, 223, 0.7);
 }
+
 .social-icon {
+  cursor: pointer;
   color: rgb(85, 78, 78);
   transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
 }
@@ -130,7 +137,7 @@
   transform: scale(1.2);
 }
 .slider {
-  width: 80%;
+  width: 60%;
   margin: 0 auto;
   padding: 1em 0;
   height: auto;
@@ -140,10 +147,11 @@
   height: auto;
   border-radius: 0.5em;
 }
+
 @media only screen and (max-width: 600px) {
   .event-img {
-    width: 2em;
-    height: 2em;
+    width: 3em;
+    height: 3em;
   }
   .event-score {
     font-size: 1em;
@@ -151,8 +159,8 @@
   .team-name {
     font-size: 0.9em;
   }
-  .player-name {
-    font-size: 0.4em;
+  .player-list-name {
+    font-size: 0.5em;
   }
   .event-date {
     font-size: 0.8em;
@@ -165,9 +173,12 @@
     padding: 30% 0.5em;
   }
   .players-container {
-    grid-template-columns: repeat(auto-fill, minmax(3em, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(5em, 1fr));
   }
   .social-links {
     font-size: 1.5em;
+  }
+  .slider {
+    width: 80%;
   }
 }

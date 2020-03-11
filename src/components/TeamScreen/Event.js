@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-const TeamEvents = props => {
+const Event = props => {
   const result = +props.homeTeam.score - +props.awayTeam.score > 0;
   const logos = useSelector(state => state.logos);
   const isWinner = result
@@ -55,4 +55,4 @@ const TeamEvents = props => {
   );
 };
 
-export default TeamEvents;
+export default Event;

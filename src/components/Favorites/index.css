@@ -1,0 +1,25 @@
+.favorites-container {
+  padding: 1.5em;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
+  gap: 2em;
+}
+
+.favorite-img {
+  max-width: 100%;
+  outline: none;
+  cursor: pointer;
+  transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
+  background: rgb(219, 219, 213, 0.85);
+  border-radius: 1em;
+}
+.favorite-img:hover {
+  transform: scale(1.1);
+}
+
+@media only screen and (max-width: 600px) {
+  .favorites-container {
+    grid-template-columns: repeat(auto-fill, minmax(4em, 1fr));
+  }
+}
