@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import PlayerCard from '../PlayerCard';
 import './index.css';
 
 const Favorites = () => {
   const userId = useSelector(state => state.auth.userId);
+  const isSignedIn = useSelector(state => state.auth.isSignedIn);
   const favorites = useSelector(state => state.favorites);
   const [currPlayer, setCurrPlayer] = useState();
 
@@ -51,13 +52,14 @@ const Favorites = () => {
   const renderPlayerCard = playerId => {
     return <PlayerCard id={playerId} close={() => setCurrPlayer(null)} />;
   };
-  console.log(favorites);
-  return (
+  return isSignedIn ? (
     <div>
       {renderTeams()}
       {renderPlayers()}
       {currPlayer ? renderPlayerCard(currPlayer) : null}
     </div>
+  ) : (
+    <Redirect to='/' />
   );
 };
 

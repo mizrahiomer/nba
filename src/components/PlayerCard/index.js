@@ -2,18 +2,21 @@ import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
 import { ClipLoader } from 'react-spinners';
 import { useSelector, useDispatch } from 'react-redux';
+import Fade from 'react-reveal/Fade';
 import { createPlayerObject } from '../../include/createObject';
 import { removePlayer, addPlayer } from '../../stateManager/actions/favorites';
-import Fade from 'react-reveal/Fade';
 import noImg from '../../assets/noImg.png';
 import {
   fetchPlayerDetails,
   fetchPlayerHonors
 } from '../../include/generateEndPoints';
 import './index.css';
+import SignInModal from '../SignInModal';
 
 const PlayerCard = props => {
   const userId = useSelector(state => state.auth.userId);
+  const isSignedIn = useSelector(state => state.auth.isSignedIn);
+  const [showModal, setShowModal] = useState(false);
   const favoritesArr = useSelector(state => state.favorites.players);
   const dispatch = useDispatch();
   const [details, setDetails] = useState();
@@ -64,7 +67,6 @@ const PlayerCard = props => {
     return isFavorite;
   };
   const toggleFavorite = () => {
-    console.log(checkIfFavorite());
     const { idPlayer, strPlayer, strCutout } = details;
     checkIfFavorite()
       ? dispatch(removePlayer(userId, idPlayer))
@@ -85,9 +87,10 @@ const PlayerCard = props => {
               </span>
               <div className='player-name'>
                 {details.strPlayer}
+
                 <i
                   onClick={() => {
-                    toggleFavorite();
+                    isSignedIn ? toggleFavorite() : setShowModal(true);
                   }}
                   className={`fa fa-heart player-favorite ${favoriteClass}`}
                 />
@@ -116,8 +119,21 @@ const PlayerCard = props => {
       <ClipLoader color='#fff' />
     );
   };
-
-  return <div>{renderPlayer()}</div>;
+  const renderSignInModal = () => {
+    return (
+      <SignInModal
+        close={() => {
+          setShowModal(false);
+        }}
+      />
+    );
+  };
+  return (
+    <div>
+      {!showModal ? renderPlayer() : null}
+      {!isSignedIn ? (showModal ? renderSignInModal() : null) : null}
+    </div>
+  );
 };
 
 export default PlayerCard;
