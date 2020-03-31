@@ -10,21 +10,20 @@ const Header = props => {
   return (
     <div className='team-header'>
       <Slide left>
-        <div className='social-links'>
+        <div className='header-links'>
           <a href={'//' + props.facebook} target='_blang'>
-            <i className='fab fa-facebook social-icon'></i>
+            <i className='fab fa-facebook header-item'></i>
           </a>
           <a href={'//' + props.instagram} target='_blang'>
-            <i className='fab fa-instagram social-icon'></i>
+            <i className='fab fa-instagram header-item'></i>
           </a>
           <a href={'//' + props.youtube} target='_blang'>
-            <i className='fab fa-youtube social-icon'></i>
+            <i className='fab fa-youtube header-item'></i>
           </a>
           <a href={'//' + props.twitter} target='_blang'>
-            <i className='fab fa-twitter social-icon'></i>
+            <i className='fab fa-twitter header-item'></i>
           </a>
-
-          <span className='social-icon'>
+          <span className='header-item'>
             <i
               onClick={
                 isSignedIn ? props.toggleFavorite : () => setShowModal(true)
@@ -32,8 +31,16 @@ const Header = props => {
               className={`fa fa-heart ${isFavorite}`}
             ></i>
           </span>
+          <span className='header-item' onClick={props.toggleEvents}>
+            {props.showEvents ? (
+              <i className='fa fa-times' />
+            ) : (
+              <i className='far fa-calendar-alt' />
+            )}
+          </span>
         </div>
       </Slide>
+
       {!isSignedIn ? (
         showModal ? (
           <SignInModal

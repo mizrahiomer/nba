@@ -1,4 +1,5 @@
-import firebase from './firebase';
+import { app as firebase } from './firebase';
+import 'firebase/auth';
 
 export const getAuth = () => {
   return firebase.auth();

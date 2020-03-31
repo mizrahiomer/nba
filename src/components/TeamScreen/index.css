@@ -8,9 +8,6 @@
   text-align: center;
   grid-template-columns: auto auto;
 }
-
-.events-container {
-}
 .event {
   display: grid;
   padding: 0.5em 0.3em;
@@ -58,15 +55,15 @@
   background: rgb(92, 87, 87, 0.7);
 }
 .toggle-btn {
-  display: inline;
   margin: 0 1em;
-  font-size: 1.2em;
+  font-size: 1.5em;
   cursor: pointer;
   transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
 }
 .toggle-btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
+
 .players-container {
   justify-content: center;
   padding: 1.5em;
@@ -76,7 +73,7 @@
 }
 .player-list-img {
   border-radius: 50%;
-  background-color: #dfd8d8;
+  background-color: rgba(230, 230, 230, 0.95);
   max-width: 100%;
 }
 .img-overlay {
@@ -85,13 +82,14 @@
   border-radius: 50%;
   width: 100%;
   text-align: center;
-  color: #f5f5f5;
+  color: white;
   height: 98%;
   opacity: 0;
-  border: 1px #f5f5f5 solid;
+  background: rgba(146, 146, 146, 0.5);
 }
 .player-list-name {
-  font-size: 1.3em;
+  font-size: 1.35em;
+  padding: 0 0.5em;
   display: table-cell;
   vertical-align: middle;
 }
@@ -101,12 +99,13 @@
   transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
 }
 .img-container:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 .img-container:hover .img-overlay {
   opacity: 1;
-  background: rgba(37, 36, 36, 0.4);
+  box-shadow: 0.2em 0.2em 1.2em 0.1em rgba(0, 0, 0, 0.5);
 }
+
 .team-logo-container {
   text-align: center;
 }
@@ -117,24 +116,24 @@
 .team-favorite {
   color: rgb(243, 97, 97);
 }
-
-.social-links {
-  padding: 0.2em 0.8em;
+.header-links {
+  padding: 0.2em 0 0.6em 0.6em;
   border-radius: 0 0.3em 0.3em 0;
   display: inline-grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: repeat(6, auto);
   gap: 1em;
   font-size: 2.2em;
 }
 
-.social-icon {
+.header-item {
   cursor: pointer;
-  color: rgb(85, 78, 78);
+  padding: 0;
+  color: rgb(61, 61, 61);
   transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
 }
-.social-icon:hover {
-  color: rgb(43, 41, 41);
-  transform: scale(1.2);
+.header-item:hover {
+  color: rgb(80, 80, 80);
+  transform: scale(1.1);
 }
 .slider {
   width: 60%;
@@ -159,6 +158,9 @@
   .team-name {
     font-size: 0.9em;
   }
+  .team-logo {
+    width: 90%;
+  }
   .player-list-name {
     font-size: 0.5em;
   }
@@ -175,10 +177,14 @@
   .players-container {
     grid-template-columns: repeat(auto-fill, minmax(5em, 1fr));
   }
-  .social-links {
-    font-size: 1.5em;
+  .header-links {
+    font-size: 1.8em;
+    padding: 0.5em 1em;
   }
   .slider {
     width: 80%;
+  }
+  .img-overlay {
+    display: none;
   }
 }

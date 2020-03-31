@@ -1,15 +1,11 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
-import { ClipLoader } from 'react-spinners';
 import { useSelector, useDispatch } from 'react-redux';
 import Fade from 'react-reveal/Fade';
 import { createPlayerObject } from '../../include/createObject';
 import { removePlayer, addPlayer } from '../../stateManager/actions/favorites';
 import noImg from '../../assets/noImg.png';
-import {
-  fetchPlayerDetails,
-  fetchPlayerHonors
-} from '../../include/generateEndPoints';
+import { fetchPlayerDetails } from '../../include/generateEndPoints';
 import './index.css';
 import SignInModal from '../SignInModal';
 
@@ -20,35 +16,29 @@ const PlayerCard = props => {
   const favoritesArr = useSelector(state => state.favorites.players);
   const dispatch = useDispatch();
   const [details, setDetails] = useState();
-  const [honors, setHonors] = useState();
   const playerId = props.id;
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const detailsUrl = fetchPlayerDetails(playerId);
-        const honorsUrl = fetchPlayerHonors(playerId);
-        const details = axios.get(detailsUrl);
-        const honors = axios.get(honorsUrl);
-
-        const [fetchedDeatils, fetchedHonors] = await Promise.all([
-          details,
-          honors
-        ]);
-
-        setDetails(fetchedDeatils.data.players[0]);
-        setHonors(fetchedHonors.data.honors);
+        const url = fetchPlayerDetails(playerId);
+        const res = await axios.get(url);
+        setDetails(res.data.players[0]);
       } catch (e) {
         console.log(e);
       }
     };
+    const escFunction = e => {
+      return e.keyCode === 27 ? props.close() : null;
+    };
     fetchData();
-  }, [playerId]);
+    document.addEventListener('keydown', escFunction, false);
+  }, [playerId, props]);
   const getAge = dob => {
     const now = new Date();
-    const x = new Date(dob);
-    const yearsDiff = now.getFullYear() - x.getFullYear();
-    const monthsDiff = now.getMonth() - x.getMonth();
-    const daysDiff = now.getDate() - x.getDate();
+    const tempDob = new Date(dob);
+    const yearsDiff = now.getFullYear() - tempDob.getFullYear();
+    const monthsDiff = now.getMonth() - tempDob.getMonth();
+    const daysDiff = now.getDate() - tempDob.getDate();
     let age = yearsDiff;
     age =
       monthsDiff < 0
@@ -61,63 +51,83 @@ const PlayerCard = props => {
     return age;
   };
   const checkIfFavorite = () => {
-    const isFavorite = favoritesArr.find(
-      favorite => favorite.userId === userId && favorite.playerId === props.id
+    if (favoritesArr) {
+      const isFavorite = favoritesArr.find(
+        favorite => favorite.userId === userId && favorite.playerId === props.id
+      );
+      return isFavorite;
+    }
+  };
+  const getFavoriteId = () => {
+    const player = favoritesArr.find(
+      favorite =>
+        favorite.userId === userId && favorite.playerId === details.idPlayer
     );
-    return isFavorite;
+    return player.id;
   };
   const toggleFavorite = () => {
     const { idPlayer, strPlayer, strCutout } = details;
     checkIfFavorite()
-      ? dispatch(removePlayer(userId, idPlayer))
+      ? dispatch(removePlayer(getFavoriteId()))
       : dispatch(
           addPlayer(createPlayerObject(userId, idPlayer, strPlayer, strCutout))
         );
   };
   const renderPlayer = () => {
-    const favoriteClass = checkIfFavorite() ? 'isFavorite' : null;
+    const favoriteClass = checkIfFavorite() ? 'isFavorite' : '';
+
     return details ? (
       <Fragment>
         <div className='modal-overlay' onClick={props.close} />
         <Fade>
-          <div className='modal'>
-            <div className='player-screen'>
-              <span className='close-modal-btn' onClick={props.close}>
-                <i className='fa fa-times' />
+          <div className='player-screen'>
+            <span className='close-modal-btn' onClick={props.close}>
+              <i className='fa fa-times' />
+            </span>
+            <div className='player-name'>{details.strPlayer}</div>
+            <div className='player-position'>{details.strPosition}</div>
+
+            <div className='player-img-container'>
+              <img
+                className={`player-img ${favoriteClass}`}
+                src={details.strThumb ? details.strThumb : noImg}
+                alt={details.strPlayer}
+              />
+              <i
+                onClick={() => {
+                  isSignedIn ? toggleFavorite() : setShowModal(true);
+                }}
+                className={`fa fa-heart player-favorite ${favoriteClass}`}
+              />
+            </div>
+            <div className='player-details'>
+              <span>
+                <b>Age: </b>
+                {getAge(details.dateBorn)}
               </span>
-              <div className='player-name'>
-                {details.strPlayer}
-
-                <i
-                  onClick={() => {
-                    isSignedIn ? toggleFavorite() : setShowModal(true);
-                  }}
-                  className={`fa fa-heart player-favorite ${favoriteClass}`}
-                />
-              </div>
-
-              <div className='player-details'>
-                <img
-                  className='player-img'
-                  src={details.strThumb ? details.strThumb : noImg}
-                  alt={details.strPlayer}
-                />
-                <div>
-                  <p> Born: {details.dateBorn}</p>
-                  <p>Age: {getAge(details.dateBorn)}</p>
-                  <p>Position: {details.strPosition}</p>
-                  <p> Height: {details.strHeight}</p>
-                  <p> Weight: {details.strWeight}</p>
-                  <p> From: {details.strBirthLocation}</p>
-                </div>
-              </div>
+              <span>
+                <b>Born:</b> {details.dateBorn}
+              </span>
+              <span>
+                <b>Height: </b>
+                {details.strHeight}
+              </span>
+              <span>
+                <b>Weight: </b>
+                {details.strWeight}
+              </span>
+              <span>
+                <b>From: </b>
+                {details.strBirthLocation}
+              </span>
+              <span>
+                <b>Nationality:</b> {details.strNationality}
+              </span>
             </div>
           </div>
         </Fade>
       </Fragment>
-    ) : (
-      <ClipLoader color='#fff' />
-    );
+    ) : null;
   };
   const renderSignInModal = () => {
     return (

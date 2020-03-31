@@ -1,15 +1,15 @@
 import firebase from 'firebase/app';
-import 'firebase/auth';
-const firebaseConfig = {
-  apiKey: 'AIzaSyA6VzK_SFoh0agc4Tk53ar-cFmJEy0Dn5A',
-  authDomain: 'nba-app-7e573.firebaseapp.com',
-  databaseURL: 'https://nba-app-7e573.firebaseio.com',
-  projectId: 'nba-app-7e573',
-  storageBucket: 'nba-app-7e573.appspot.com',
-  messagingSenderId: '840097377842',
-  appId: '1:840097377842:web:66fdc033f0866ff2cc562b',
-  measurementId: 'G-XP8VZF0W08'
-};
-const app = firebase.initializeApp(firebaseConfig);
+import 'firebase/database';
 
-export default app;
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
+};
+export const app = firebase.initializeApp(firebaseConfig);
+export const databaseRef = firebase.database().ref();

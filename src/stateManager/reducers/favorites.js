@@ -1,38 +1,32 @@
 import * as actionTypes from '../actions/favorites';
 const initialState = {
-  teams: [],
-  players: []
+  teams: null,
+  players: null
 };
 const favorites = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.ADD_TEAM:
+    case actionTypes.FETCH_FAVORITES:
+      const fetchedPlayers = [];
+      if (action.payload) {
+        for (let key in action.payload.players) {
+          fetchedPlayers.push({
+            ...action.payload.players[key],
+            id: key
+          });
+        }
+      }
+      const fetchedTeams = [];
+      if (action.payload) {
+        for (let key in action.payload.teams) {
+          fetchedTeams.push({
+            ...action.payload.teams[key],
+            id: key
+          });
+        }
+      }
       return {
-        ...state,
-        teams: state.teams.concat(action.teamObj)
-      };
-    case actionTypes.REMOVE_TEAM:
-      const newTeams = state.teams.filter(
-        team => team.userId !== action.userId && team.teamId !== action.teamId
-      );
-
-      return {
-        ...state,
-        teams: newTeams
-      };
-    case actionTypes.ADD_PLAYER:
-      return {
-        ...state,
-        players: state.players.concat(action.playerObj)
-      };
-    case actionTypes.REMOVE_PLAYER:
-      const newPlayers = state.players.filter(
-        player =>
-          player.userId !== action.userId && player.playerId !== action.playerId
-      );
-
-      return {
-        ...state,
-        players: newPlayers
+        teams: fetchedTeams,
+        players: fetchedPlayers
       };
 
     default:

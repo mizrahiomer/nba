@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ClipLoader } from 'react-spinners';
 import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Slide from 'react-reveal/Slide';
@@ -12,7 +11,11 @@ import {
   fetchPlayersByTeamName,
   fetchTeams
 } from '../../include/generateEndPoints';
-import { addTeam, removeTeam } from '../../stateManager/actions/favorites';
+import {
+  addTeam,
+  removeTeam,
+  fetchFavorites
+} from '../../stateManager/actions/favorites';
 import Event from './Event';
 import PlayersList from './PlayersList';
 import Header from './Header';
@@ -23,7 +26,7 @@ import noImg from '../../assets/noImg.png';
 import './index.css';
 
 const TeamScreen = props => {
-  const [eventsToggler, setEventsToggler] = useState(true);
+  const [eventsToggler, setEventsToggler] = useState(false);
   const [currPlayer, setCurrPlayer] = useState();
   const [nextEvents, setNextEvents] = useState();
   const [lastEvents, setLastEvents] = useState();
@@ -65,18 +68,28 @@ const TeamScreen = props => {
       }
     };
     fetchData();
+    dispatch(fetchFavorites());
   }, [teamId, teamName, dispatch]);
   const checkIfFavorite = () => {
-    const isFavorite = favoritesArr.find(
+    if (favoritesArr) {
+      const isFavorite = favoritesArr.find(
+        favorite =>
+          favorite.userId === userId && favorite.teamId === details.idTeam
+      );
+      return isFavorite;
+    }
+  };
+  const getFavoriteId = () => {
+    const team = favoritesArr.find(
       favorite =>
         favorite.userId === userId && favorite.teamId === details.idTeam
     );
-    return isFavorite;
+    return team.id;
   };
   const toggleFavorite = () => {
     const { idTeam, strTeam, strTeamBadge } = details;
     checkIfFavorite()
-      ? dispatch(removeTeam(userId, idTeam))
+      ? dispatch(removeTeam(getFavoriteId()))
       : dispatch(
           addTeam(createTeamObject(userId, idTeam, strTeam, strTeamBadge))
         );
@@ -92,10 +105,10 @@ const TeamScreen = props => {
         youtube={details.strYoutube}
         isFavorite={checkIfFavorite()}
         toggleFavorite={() => toggleFavorite()}
+        toggleEvents={() => setEventsToggler(!eventsToggler)}
+        showEvents={eventsToggler}
       ></Header>
-    ) : (
-      <ClipLoader color={'#fff'} />
-    );
+    ) : null;
   };
   const renderPlayerCard = playerId => {
     return <PlayerCard id={playerId} close={() => setCurrPlayer(null)} />;
@@ -118,9 +131,7 @@ const TeamScreen = props => {
           details.strTeamFanart4
         ]}
       />
-    ) : (
-      <ClipLoader color={'#fff'} />
-    );
+    ) : null;
   };
 
   const renderLastEvents = () => {
@@ -196,23 +207,11 @@ const TeamScreen = props => {
             />
           ))}
       </div>
-    ) : (
-      <ClipLoader color={'#fff'} />
-    );
+    ) : null;
   };
 
   return (
     <div className='team-screen'>
-      <div
-        className='events-toggle'
-        onClick={() => {
-          setEventsToggler(!eventsToggler);
-        }}
-      >
-        <p className='toggle-btn'>
-          {eventsToggler ? 'Hide Events' : 'Show Events'}
-        </p>
-      </div>
       {renderHeader()}
       {eventsToggler ? renderEvents() : null}
       {renderPlayers()}

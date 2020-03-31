@@ -47,15 +47,16 @@
 
 @media only screen and (max-width: 600px) {
   .navbar {
-    padding: 0.5em;
+    gap: 1.7em;
   }
   .hello {
     font-size: 0.8em;
+    padding-left: 0;
   }
   .authBtn {
     font-size: 0.7em;
   }
   .icon {
-    font-size: 1.5em;
+    font-size: 1.4em;
   }
 }

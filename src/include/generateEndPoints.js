@@ -31,6 +31,3 @@ export const fetchPlayersByTeamName = teamName => {
 export const fetchPlayerDetails = playerId => {
   return `https://www.thesportsdb.com/api/v1/json/1/lookupplayer.php?id=${playerId}`;
 };
-export const fetchPlayerHonors = playerId => {
-  return `https://www.thesportsdb.com/api/v1/json/1/lookuphonors.php?id=${playerId}`;
-};
